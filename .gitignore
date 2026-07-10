@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Flutter
+frontend/metervision_app/build/
+frontend/metervision_app/.dart_tool/
+frontend/metervision_app/.packages
+
+# React
+frontend/dashboard/node_modules/
+frontend/dashboard/dist/
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
