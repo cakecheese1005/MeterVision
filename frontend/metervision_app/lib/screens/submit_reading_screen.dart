@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +7,7 @@ import '../core/router.dart';
 import '../core/theme.dart';
 import '../models/meter_reading_draft.dart';
 import '../providers/reading_provider.dart';
+import '../widgets/captured_image.dart';
 
 class SubmitReadingScreen extends ConsumerStatefulWidget {
   final String consumerId;
@@ -73,9 +71,7 @@ class _SubmitReadingScreenState extends ConsumerState<SubmitReadingScreen> {
                     child: SizedBox(
                       height: 180,
                       width: double.infinity,
-                      child: kIsWeb
-                          ? Image.network(widget.imagePath, fit: BoxFit.cover)
-                          : Image.file(File(widget.imagePath), fit: BoxFit.cover),
+                      child: CapturedImage(imagePath: widget.imagePath, fit: BoxFit.cover),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.md),

@@ -199,7 +199,7 @@ class _ReviewView extends ConsumerWidget {
         Expanded(
           child: kIsWeb
             ? Image.network(imagePath, fit: BoxFit.contain, width: double.infinity)
-          : Image.file(File(imagePath), fit: BoxFit.contain, width: double.infinity),
+            : Image.file(File(imagePath), fit: BoxFit.contain, width: double.infinity),
         ),
         Container(
           color: AppColors.primary,

@@ -1,11 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:go_router/go_router.dart';
+
+import '../core/router.dart';
 import '../core/theme.dart';
 import '../models/ocr_result.dart';
 import '../providers/ocr_provider.dart';
+import '../widgets/captured_image.dart';
 
 class OcrVerificationScreen extends ConsumerStatefulWidget {
   final String consumerId;
@@ -30,8 +31,6 @@ class _OcrVerificationScreenState extends ConsumerState<OcrVerificationScreen> {
   Widget build(BuildContext context) {
     final ocrAsync = ref.watch(ocrResultProvider(widget.imagePath));
 
-    // Pre-fill the editable field with the OCR reading the first time it
-    // arrives, without ever overwriting what the officer has since typed.
     ref.listen(ocrResultProvider(widget.imagePath), (previous, next) {
       next.whenData((result) {
         if (!_prefilled) {
@@ -48,9 +47,7 @@ class _OcrVerificationScreenState extends ConsumerState<OcrVerificationScreen> {
           SizedBox(
             height: 220,
             width: double.infinity,
-            child: kIsWeb
-                ? Image.network(widget.imagePath, fit: BoxFit.cover)
-                : Image.file(File(widget.imagePath), fit: BoxFit.cover),
+            child: CapturedImage(imagePath: widget.imagePath, fit: BoxFit.cover),
           ),
           const Divider(height: 1),
           Expanded(
@@ -92,11 +89,14 @@ class _OcrVerificationScreenState extends ConsumerState<OcrVerificationScreen> {
                 onPressed: _readingController.text.trim().isEmpty
                     ? null
                     : () {
-                        // TODO: hand off (consumerId, imagePath, manual reading,
-                        // ocr result) to local storage (pending_readings box),
-                        // then navigate to Submit Reading screen.
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Reading confirmed — Submit screen pending.')),
+                        context.push(
+                          AppRoutes.submitReading,
+                          extra: SubmitReadingArgs(
+                            consumerId: widget.consumerId,
+                            imagePath: widget.imagePath,
+                            reading: _readingController.text.trim(),
+                            ocrConfidence: ocrAsync.valueOrNull?.confidenceScore,
+                          ),
                         );
                       },
                 child: const Text('CONFIRM & CONTINUE'),

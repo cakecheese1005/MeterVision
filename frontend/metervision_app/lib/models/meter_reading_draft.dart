@@ -1,8 +1,5 @@
 import '../core/constants.dart';
 
-/// A confirmed meter reading, ready to be saved locally before sync.
-/// Mirrors the 'meter_readings' table shape on the backend, minus fields
-/// (id, reader_id, status) that only get set once it's actually synced.
 class MeterReadingDraft {
   final String consumerId;
   final String imagePath;
