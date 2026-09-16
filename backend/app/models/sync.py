@@ -26,7 +26,7 @@ class BulkSyncRequest(BaseModel):
 
 class SyncQueueResponse(BaseModel):
     id: str
-    device_id: str
+    device_id: str | None=None
     reading_id: str
     status: SyncStatus
     retry_count: int

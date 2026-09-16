@@ -1,6 +1,6 @@
 from .auth import *
 from .common import *
-from .user import *
+from .users import *
 from .consumer import *
 from .reading import *
 from .image import *

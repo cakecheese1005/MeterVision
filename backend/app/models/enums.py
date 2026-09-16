@@ -50,6 +50,7 @@ class OCRStatus(str, Enum):
     SUCCESS = "success"
     FAILED = "failed"
     LOW_CONFIDENCE = "low_confidence"
+    VERIFIED = "verified"
 
 
 # ==========================================================
@@ -58,23 +59,48 @@ class OCRStatus(str, Enum):
 
 class AIClassification(str, Enum):
 
-    IMAGE_OK_ELECTRO = "Image Okay Electro Mechanical Meter"
+    # NOTE:
+    # These values must match CLASSIFICATIONS in
+    # app/ml/meter_core.py EXACTLY, character for
+    # character (including the em dash "—", not a
+    # hyphen "-" or en dash "–"). That dict is the
+    # source of truth for what the AI service emits.
 
-    BLUR_ELECTRO = "Blur Image Electro Mechanical Meter"
+    IMAGE_OK_ELECTRO = (
+        "Image OK — Electro Mechanical Meter"
+    )
 
-    BLUR_DIGITAL = "Blur Image Digital Meter"
+    BLUR_ELECTRO = (
+        "Blur Image — Electro Mechanical Meter"
+    )
 
-    MISMATCH_ELECTRO = "Reading MisMatch Electro Mechanical Meter"
+    BLUR_DIGITAL = (
+        "Blur Image — Digital Meter"
+    )
 
-    MISMATCH_DIGITAL = "Reading Mis Match Digital Meter"
+    MISMATCH_ELECTRO = (
+        "Reading Mismatch — Electro Mechanical Meter"
+    )
 
-    REFLECTION_DIGITAL = "Reflection Digital Meter"
+    MISMATCH_DIGITAL = (
+        "Reading Mismatch — Digital Meter"
+    )
 
-    IRRELEVANT_ELECTRO = "Irrelevant Image Electro Mechanical Meter"
+    REFLECTION_DIGITAL = (
+        "Reflection — Digital Meter"
+    )
 
-    IRRELEVANT_DIGITAL = "Irrelevant Image Digital Meter"
+    IRRELEVANT_ELECTRO = (
+        "Irrelevant Image — Electro Mechanical Meter"
+    )
 
-    IMAGE_OK_DIGITAL = "Image Okay Digital Meter"
+    IRRELEVANT_DIGITAL = (
+        "Irrelevant Image — Digital Meter"
+    )
+
+    IMAGE_OK_DIGITAL = (
+        "Image OK — Digital Meter"
+    )
 
 
 # ==========================================================
@@ -148,9 +174,19 @@ class NetworkStatus(str, Enum):
     ONLINE = "online"
     OFFLINE = "offline"
 
+
+# ==========================================================
+# SORT ORDER
+# ==========================================================
+
 class SortOrder(str, Enum):
     ASC = "asc"
     DESC = "desc"
+
+
+# ==========================================================
+# NOTIFICATION TYPE
+# ==========================================================
 
 class NotificationType(str, Enum):
     ASSIGNMENT = "assignment"

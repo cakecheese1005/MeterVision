@@ -1,34 +1,47 @@
-from fastapi import APIRouter
-from app.core.deps import get_supabase
+from fastapi import APIRouter, Depends
 
-router = APIRouter(
-    prefix="/dashboard",
-    tags=["Dashboard"]
+from supabase import Client
+
+from app.core.deps import get_supabase
+from app.core.security import get_current_user
+
+from app.models.dashboard import (
+    DashboardFilter,
+    DashboardResponse,
+)
+
+from app.services.dashboard_service import (
+    DashboardService,
 )
 
 
-@router.get("/summary")
-def dashboard_summary():
+router = APIRouter(
+    prefix="/dashboard",
+    tags=["Dashboard"],
+)
 
-    db = get_supabase()
 
-    readings = db.table(
-        "readings"
-    ).select("*", count="exact").execute()
+def get_dashboard_service(
+    db: Client = Depends(get_supabase),
+) -> DashboardService:
 
-    anomalies = db.table(
-        "anomalies"
-    ).select("*", count="exact").execute()
+    return DashboardService(db)
 
-    lcr = db.table(
-        "lcr_cases"
-    ).select("*", count="exact").eq(
-        "status",
-        "OPEN"
-    ).execute()
 
-    return {
-        "total_readings": readings.count,
-        "total_anomalies": anomalies.count,
-        "pending_lcr": lcr.count
-    }
+# =========================================================
+# GET DASHBOARD SUMMARY
+# =========================================================
+
+@router.get(
+    "",
+    response_model=DashboardResponse,
+)
+def get_dashboard(
+    filters: DashboardFilter = Depends(),
+    current_user: dict = Depends(get_current_user),
+    service: DashboardService = Depends(
+        get_dashboard_service
+    ),
+):
+
+    return service.get_dashboard(filters)

@@ -1,0 +1,9 @@
+import {NavLink} from 'react-router-dom'
+import {GaugeIcon,ListIcon,ImageIcon,SyncIcon,AlertTriangleIcon,FileTextIcon,BellIcon,UsersIcon,UserIcon,BoltIcon} from './icons'
+const groups=[
+ {title:'OPERATIONS',items:[['/','Dashboard',GaugeIcon],['/readings','Meter Readings',ListIcon],['/images','Image Verification',ImageIcon],['/sync','Sync Queue',SyncIcon]]},
+ {title:'VERIFICATION',items:[['/anomalies','Anomalies',AlertTriangleIcon],['/lcr','LCR Cases',FileTextIcon]]},
+ {title:'MANAGEMENT',items:[['/consumers','Consumers',UsersIcon],['/officers','Officers',UserIcon]]},
+ {title:'SYSTEM',items:[['/notifications','Notifications',BellIcon]]},
+] as const
+export function Sidebar(){return <aside className="hidden w-64 shrink-0 flex-col border-r border-slate-200 bg-ink-950 text-slate-300 lg:flex"><div className="flex items-center gap-3 px-5 py-5"><div className="flex h-9 w-9 items-center justify-center rounded-lg bg-volt-400"><BoltIcon className="h-5 w-5 text-ink-950"/></div><div><p className="font-bold text-white">MeterVision</p><p className="text-[11px] text-slate-400">PSPCL Admin</p></div></div><nav className="flex-1 space-y-5 overflow-y-auto px-3 py-3 thin-scroll">{groups.map(g=><div key={g.title}><p className="px-3 pb-2 text-[10px] font-semibold tracking-[.18em] text-slate-500">{g.title}</p>{g.items.map(([to,label,Icon])=><NavLink key={to} to={to} end={to==='/' } className={({isActive})=>`mb-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium ${isActive?'bg-white/10 text-white':'text-slate-400 hover:bg-white/5 hover:text-slate-200'}`}><Icon className="h-4 w-4"/>{label}</NavLink>)}</div>)}</nav><div className="border-t border-white/5 px-5 py-4"><p className="text-[11px] text-slate-500">API</p><p className="truncate font-mono text-[10px] text-slate-400">{import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'}</p></div></aside>}
